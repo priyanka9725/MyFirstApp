@@ -30,9 +30,10 @@ body::-webkit-scrollbar {
 .j-between {
   justify-content: space-between;
 }
-.j-between {
+.j-center {
   justify-content: center;
 }
 .a-center {
   align-items: center;
 }
+

@@ -8,10 +8,11 @@ import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  updateCurrentUser,
 } from "firebase/auth";
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -24,6 +25,9 @@ export default function Signup() {
       console.log(err);
     }
   };
+  onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
+    if (updateCurrentUser) Navigate("/");
+  });
   return (
     <Container showPassword={showPassword}>
       <BackgroundImage />
@@ -107,7 +111,7 @@ const Container = styled.div`
         color:black;
         border: none;
         padding: 1.5rem;
-        font-size: 1.2rem
+        font-size: 1.2rem;
         border: 1px solid black;
         &:focus{
           outline:none;

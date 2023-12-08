@@ -17,7 +17,7 @@ export default function Navbar({ isScrolled }) {
 
   return (
     <Container>
-      <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
+      <nav className={`${isScrolled ? "scrolled" : ""}flex`}>
         <div className="left flex a-center">
           <div className="brand flex a-center j-center">
             <img src={logo} alt="Logo" />
@@ -81,10 +81,10 @@ const Container = styled.div`
     align-items: center;
     transition: 0.3s ease-in-out;
     .left {
-      gap: 2rem;
+      gap: 1rem;
       .brand {
         img {
-          height: 4rem;
+          height: 7rem;
         }
       }
       .links {

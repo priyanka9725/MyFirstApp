@@ -4,11 +4,8 @@ import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
 import { FirebaseError } from "firebase/app";
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  updateCurrentUser,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 export default function LogIn() {
   const [formValues, setFormValues] = useState({
     email: "",

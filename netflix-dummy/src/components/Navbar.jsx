@@ -1,13 +1,15 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { firebaseAuth } from "../utils/firebase-config";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
 export default function Navbar({ isScrolled }) {
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setInputHover] = useState(false);
+
   const links = [
     { name: "Home", link: "/" },
     { name: "TV Shows", link: "/tv" },
@@ -21,10 +23,10 @@ export default function Navbar({ isScrolled }) {
 
   return (
     <Container>
-      <nav className={`${isScrolled ? "scrolled" : ""}flex`}>
+      <nav className={`flex ${isScrolled ? "scrolled" : ""}`}>
         <div className="left flex a-center">
           <div className="brand flex a-center j-center">
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="logo" />
           </div>
           <ul className="links flex">
             {links.map(({ name, link }) => {
@@ -81,14 +83,14 @@ const Container = styled.div`
     position: fixed;
     top: 0;
     z-index: 2;
-    padding: 0 4rem;
+    padding: 0 2rem;
     align-items: center;
     transition: 0.3s ease-in-out;
     .left {
       gap: 1rem;
       .brand {
         img {
-          height: 7rem;
+          height: 9rem;
         }
       }
       .links {

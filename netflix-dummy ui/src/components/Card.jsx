@@ -56,7 +56,7 @@ function Card({ movieData, isLiked = false }) {
               <div className="info">
                 <BiChevronDown title="More Info" />
               </div>
-              <div className="genres fles">
+              <div className="genres flex">
                 <ul className="flex">
                   {movieData.genres.map((genre) => (
                     <li key={genre}>{genre}</li>
@@ -94,7 +94,7 @@ const Container = styled.div`
     box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
     background-color: #181818;
     transition: 0.3s ease-in-out;
-    .image-video-conatiner {
+    .image-video-container {
       position: relative;
       height: 140px;
       img {

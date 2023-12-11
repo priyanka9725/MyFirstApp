@@ -28,9 +28,11 @@ export default function Movies() {
       dispatch(fetchMovies({ genres, type: "movie" }));
     }
   }, [genresLoaded]);
+  const [user, setUser] = useState(undefined);
 
   onAuthStateChanged(firebaseAuth, (currentUser) => {
-    //if (!currentUser) navigate("/login");
+    if (currentUser) setUser(currentUser.uid);
+    else navigate("/login");
   });
 
   window.onscroll = () => {

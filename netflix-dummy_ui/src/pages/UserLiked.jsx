@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { fetchMovies, getGenres, getUserLikedMovies } from "../store";
+import { useNavigate } from "react-router-dom";
+import { getUserLikedMovies } from "../store";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Slider from "../components/slider";
-import NotAvailable from "../components/NotAvailable";
-
 import Card from "../components/Card";
 
 export default function UserLiked() {
@@ -21,7 +18,7 @@ export default function UserLiked() {
 
   onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
     if (updateCurrentUser) setEmail(updateCurrentUser.email);
-    else Navigate("/login");
+    else navigate("/");
   });
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { Navigate } from "react-router-dom";
 
 function LogIn() {
   const [email, setEmail] = useState("");
@@ -20,7 +19,7 @@ function LogIn() {
     }
   };
   onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) Navigate("/");
+    if (currentUser) navigate("/");
   });
 
   return (

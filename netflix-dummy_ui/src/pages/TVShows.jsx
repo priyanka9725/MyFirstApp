@@ -28,9 +28,10 @@ export default function TVShows() {
       dispatch(fetchMovies({ genres, type: "tv" }));
     }
   }, [genresLoaded]);
-
+  const [user, setUser] = useState(undefined);
   onAuthStateChanged(firebaseAuth, (currentUser) => {
-    //if (!currentUser) navigate("/login");
+    if (currentUser) setUser(currentUser.uid);
+    else navigate("/login");
   });
 
   window.onscroll = () => {

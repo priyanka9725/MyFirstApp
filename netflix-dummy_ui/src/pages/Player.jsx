@@ -5,12 +5,12 @@ import video from "../assets/video.mp4";
 import { useNavigate } from "react-router-dom";
 
 export default function Player() {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Container>
       <div className="player">
         <div className="back">
-          <BsArrowLeft onClick={() => Navigate(-1)} />
+          <BsArrowLeft onClick={() => navigate(-1)} />
         </div>
         <video src={video} autoPlay loop controls muted></video>
       </div>

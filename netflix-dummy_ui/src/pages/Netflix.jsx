@@ -36,6 +36,10 @@ function Netflix() {
     return () => (window.onscroll = null);
   };
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (!currentUser) navigate("/login");
+  });
+
   return (
     <Container>
       <Navbar isScrolled={isScrolled} />

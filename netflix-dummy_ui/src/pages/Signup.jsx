@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
-import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  updateCurrentUser,
 } from "firebase/auth";
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     email: "",
     password: "",
@@ -21,19 +19,19 @@ export default function Signup() {
     try {
       const { email, password } = formValues;
       await createUserWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
-  onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
-    if (updateCurrentUser) Navigate("/");
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
   });
   return (
     <Container showPassword={showPassword}>
       <BackgroundImage />
       <div className="content">
         <Header login />
-        <div className="body flex column a-center jcenter">
+        <div className="body flex column a-center j-center">
           <div className="text flex column">
             <h1>Unlimited movies, TV shows and more.</h1>
             <h4>Watch anywhere, Cancel anytime.</h4>
@@ -70,13 +68,10 @@ export default function Signup() {
             )}
 
             {!showPassword && (
-              <button onClick={() => setShowPassword(true)}>
-                {" "}
-                Get started
-              </button>
+              <button onClick={() => setShowPassword(true)}>Get started</button>
             )}
           </div>
-          <button onClick={handleSignIn}>Sign Up</button>
+          {showPassword && <button onClick={handleSignIn}>Log In</button>}
         </div>
       </div>
     </Container>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { fetchMovies, getGenres, getUserLikedMovies } from "../store";
@@ -8,14 +8,12 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Slider from "../components/slider";
 import NotAvailable from "../components/NotAvailable";
-import SelectGenre from "../components/SelectGenre";
+
 import Card from "../components/Card";
 
 export default function UserLiked() {
   const [isScrolled, setIsScrolled] = useState(false);
   const movies = useSelector((state) => state.netflix.movies);
-  const genres = useSelector((state) => state.netflix.genres);
-  const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,13 +28,7 @@ export default function UserLiked() {
     if (email) {
       dispatch(getUserLikedMovies(email));
     }
-  }, []);
-
-  useEffect(() => {
-    if (genresLoaded) {
-      dispatch(fetchMovies({ genres, type: "movie" }));
-    }
-  }, [genresLoaded]);
+  }, [email]);
 
   window.onscroll = () => {
     setIsScrolled(window.scrollY === 0 ? false : true);

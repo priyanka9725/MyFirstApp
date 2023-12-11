@@ -10,10 +10,13 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
+import { useDispatch } from "react-redux";
+import { removeFromLikedMovies } from "../../../netflix-dummy_api/controllers/UserController";
 export default function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const Navigate = useNavigate();
   const [email, setEmail] = useState(undefined);
+  const dispatch = useDispatch();
 
   onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
     if (updateCurrentUser) setEmail(updateCurrentUser.email);
@@ -67,7 +70,10 @@ export default function Card({ movieData, isLiked = false }) {
                   <RiThumbUpFill title="Like" />
                   <RiThumbDownFill title="Dislike" />
                   {isLiked ? (
-                    <BsCheck title="Remove from List" />
+                    <BsCheck
+                      title="Remove from List"
+                      onClick={() => dispatch(removeFromLikedMovies)}
+                    />
                   ) : (
                     <AiOutlinePlus title="Add to My List" onClick={addToList} />
                   )}

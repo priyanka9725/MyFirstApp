@@ -22,6 +22,7 @@ export default function CardSlider({ data, title }) {
   return (
     <Container
       className="flex column"
+      showControls={showControls}
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
@@ -30,11 +31,11 @@ export default function CardSlider({ data, title }) {
         <div
           className={`slider-action left ${
             !showControls ? "none" : ""
-          } flex a-center j-center`}
+          } flex j-center a-center`}
         >
           <AiOutlineLeft onClick={() => handleDirection("left")} />
         </div>
-        <div className="flex slider" ref={listRef}>
+        <div className="slider flex" ref={listRef}>
           {data.map((movie, index) => {
             return <Card movieData={movie} index={index} key={movie.id} />;
           })}
@@ -42,7 +43,7 @@ export default function CardSlider({ data, title }) {
         <div
           className={`slider-action right ${
             !showControls ? "none" : ""
-          } flex a-center j-center`}
+          } flex j-center a-center`}
         >
           <AiOutlineRight onClick={() => handleDirection("right")} />
         </div>

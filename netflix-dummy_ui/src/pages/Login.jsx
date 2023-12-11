@@ -3,21 +3,20 @@ import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
-import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 
-export default function LogIn() {
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
+function LogIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleLogIn = async () => {
     try {
-      const { email, password } = formValues;
       await signInWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error.code);
     }
   };
   onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -36,32 +35,20 @@ export default function LogIn() {
             </div>
             <div className="container flex column">
               <input
-                type="email"
-                placeholder="Email Address"
-                name="email"
-                value={formValues.email}
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <input
                 type="password"
                 placeholder="Password"
-                name="password"
-                value={formValues.password}
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
 
-              <button onClick={handleLogIn}> Log In</button>
+              <button onClick={handleLogIn}> Log In </button>
             </div>
           </div>
         </div>
@@ -111,3 +98,4 @@ const Container = styled.div`
     }
   }
 `;
+export default LogIn;

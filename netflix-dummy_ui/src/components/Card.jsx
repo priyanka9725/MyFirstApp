@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import video from "../assets/video.mp4";
@@ -11,15 +11,16 @@ import { BiChevronDown } from "react-icons/bi";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import { useDispatch } from "react-redux";
-import { removeFromLikedMovies } from "../../../netflix-dummy_api/controllers/UserController";
-export default function Card({ movieData, isLiked = false }) {
+import { removeFromLikedMovies } from "../store";
+
+export default React.memo(function Card({ index, movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const Navigate = useNavigate();
   const [email, setEmail] = useState(undefined);
   const dispatch = useDispatch();
 
-  onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
-    if (updateCurrentUser) setEmail(updateCurrentUser.email);
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) setEmail(currentUser.email);
     else Navigate("/login");
   });
 
@@ -29,8 +30,8 @@ export default function Card({ movieData, isLiked = false }) {
         email,
         data: movieData,
       });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
     return (
       <Container
@@ -57,7 +58,7 @@ export default function Card({ movieData, isLiked = false }) {
                 onClick={() => Navigate("/player")}
               />
             </div>
-            <div className="into-container flex column">
+            <div className="info-container flex column">
               <h3 className="name" onClick={() => Navigate("/player")}>
                 {movieData.name}
               </h3>
@@ -72,7 +73,14 @@ export default function Card({ movieData, isLiked = false }) {
                   {isLiked ? (
                     <BsCheck
                       title="Remove from List"
-                      onClick={() => dispatch(removeFromLikedMovies)}
+                      onClick={() =>
+                        dispatch(
+                          removeFromLikedMovies({
+                            movieId: movieData.id,
+                            email,
+                          })
+                        )
+                      }
                     />
                   ) : (
                     <AiOutlinePlus title="Add to My List" onClick={addToList} />
@@ -84,7 +92,7 @@ export default function Card({ movieData, isLiked = false }) {
                 <div className="genres flex">
                   <ul className="flex">
                     {movieData.genres.map((genre) => (
-                      <li key={genre}>{genre}</li>
+                      <li>{genre}</li>
                     ))}
                   </ul>
                 </div>
@@ -95,7 +103,7 @@ export default function Card({ movieData, isLiked = false }) {
       </Container>
     );
   };
-}
+});
 
 const Container = styled.div`
   max-width: 230 px;

@@ -7,11 +7,9 @@ const userRoutes = require("./routes/UserRoutes");
 app.use(cors());
 app.use(express.json());
 
-mongoose
-  .connect("mongodb://localhost:27017/netflix")
-  .then(() => {
-    console.log("DB Connected");
-  });
+mongoose.connect("mongodb://localhost:27017/netflix").then(() => {
+  console.log("DB Connected");
+});
 
 
 

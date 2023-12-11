@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios, { Axios } from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import video from "../assets/video.mp4";
@@ -7,68 +8,87 @@ import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri";
 import { BsCheck } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
-function Card({ movieData, isLiked = false }) {
+import { onAuthStateChanged } from "firebase/auth";
+import { firebaseAuth } from "../utils/firebase-config";
+export default function Card({ movieData, isLiked = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const Navigate = useNavigate();
-  return (
-    <Container
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <img
-        src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
-        alt="movie"
-      />
-      {isHovered && (
-        <div className="hover">
-          <div className="image-video-container">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
-              alt="movie"
-              onClick={() => Navigate("/player")}
-            />
-            <video
-              src={video}
-              autoPlay
-              loop
-              muted
-              onClick={() => Navigate("/player")}
-            />
-          </div>
-          <div className="into-container flex column">
-            <h3 className="name" onClick={() => Navigate("/player")}>
-              {movieData.name}
-            </h3>
-            <div className="icons flex j-between">
-              <div className="controls flex">
-                <IoPlayCircleSharp
-                  title="play"
-                  onClick={() => Navigate("/player")}
-                />
-                <RiThumbUpFill title="Like" />
-                <RiThumbDownFill title="Dislike" />
-                {isLiked ? (
-                  <BsCheck title="Remove from List" />
-                ) : (
-                  <AiOutlinePlus title="Add to My List" />
-                )}
-              </div>
-              <div className="info">
-                <BiChevronDown title="More Info" />
-              </div>
-              <div className="genres flex">
-                <ul className="flex">
-                  {movieData.genres.map((genre) => (
-                    <li key={genre}>{genre}</li>
-                  ))}
-                </ul>
+  const [email, setEmail] = useState(undefined);
+
+  onAuthStateChanged(firebaseAuth, (updateCurrentUser) => {
+    if (updateCurrentUser) setEmail(updateCurrentUser.email);
+    else Navigate("/login");
+  });
+
+  const addToList = async () => {
+    try {
+      await axios.post("https://localhost:5000/api/user/add", {
+        email,
+        data: movieData,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    return (
+      <Container
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <img
+          src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
+          alt="movie"
+        />
+        {isHovered && (
+          <div className="hover">
+            <div className="image-video-container">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
+                alt="movie"
+                onClick={() => Navigate("/player")}
+              />
+              <video
+                src={video}
+                autoPlay
+                loop
+                muted
+                onClick={() => Navigate("/player")}
+              />
+            </div>
+            <div className="into-container flex column">
+              <h3 className="name" onClick={() => Navigate("/player")}>
+                {movieData.name}
+              </h3>
+              <div className="icons flex j-between">
+                <div className="controls flex">
+                  <IoPlayCircleSharp
+                    title="play"
+                    onClick={() => Navigate("/player")}
+                  />
+                  <RiThumbUpFill title="Like" />
+                  <RiThumbDownFill title="Dislike" />
+                  {isLiked ? (
+                    <BsCheck title="Remove from List" />
+                  ) : (
+                    <AiOutlinePlus title="Add to My List" onClick={addToList} />
+                  )}
+                </div>
+                <div className="info">
+                  <BiChevronDown title="More Info" />
+                </div>
+                <div className="genres flex">
+                  <ul className="flex">
+                    {movieData.genres.map((genre) => (
+                      <li key={genre}>{genre}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </Container>
-  );
+        )}
+      </Container>
+    );
+  };
 }
 
 const Container = styled.div`
@@ -147,4 +167,3 @@ const Container = styled.div`
     }
   }
 `;
-export default Card;

@@ -4,7 +4,8 @@ import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { Navigate } from "react-router-dom";
 
 export default function LogIn() {
   const [formValues, setFormValues] = useState({
@@ -19,6 +20,9 @@ export default function LogIn() {
       console.log(err);
     }
   };
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) Navigate("/");
+  });
 
   return (
     <Container>

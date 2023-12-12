@@ -2,5 +2,5 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "cSpell.words": ["Signup", "webp"]
+  "cSpell.words": ["Idand", "mylist", "reduxjs", "Signup", "TMDB", "webp"]
 }
